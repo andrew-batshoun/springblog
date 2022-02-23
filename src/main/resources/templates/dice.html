@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dice Roll</title>
+</head>
+<body>
+
+<!--if link is click the links disappear-->
+<div th:if="!${guess}">
+    <h3>Guess a number</h3>
+    <a href="roll-dice/1">1</a>
+    <a href="roll-dice/2">2</a>
+    <a href="roll-dice/3">3</a>
+    <a href="roll-dice/4">4</a>
+    <a href="roll-dice/5">5</a>
+    <a href="roll-dice/6">6</a>
+</div>
+
+<!--if guess is made then results will show if not then they remain hidden-->
+
+<!--<div id="results" th:if="${guess}">-->
+<!--<h3>You guessed: <span th:text="${guess}"></span></h3>-->
+<!--<h3>I rolled: <span th:text="${diceRoll}"></span></h3>-->
+<!--<h3 th:text="${message}"></h3>-->
+<!--    <form action="/roll-dice" method="post">-->
+<!--        <input type="submit" name="try-again" value="Try Again">-->
+<!--    </form>-->
+<!--</div>-->
+
+<div th:if="${guess}">
+
+    <h3>Five dice have been rolled</h3>
+
+    <h3>Your guess was <span th:text="${guess}"></span></h3>
+
+    <ul>
+        <li th:each="dice : ${diceRolls}" th:text="${dice}"></li>
+    </ul>
+
+    <h3 th:text="${message}"></h3>
+
+    <form action="/roll-dice" method="post">
+        <input type="submit" name="try-again" value="Try Again">
+    </form>
+</div>
+
+</body>
+</html>

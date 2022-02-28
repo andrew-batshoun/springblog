@@ -1,6 +1,7 @@
 package com.example.springblog.controllers;
 
 import com.example.springblog.models.Post;
+import com.example.springblog.models.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,20 +13,17 @@ import java.util.List;
 public class PostController {
 
     private final PostRepository postDao;
+    private final UserRepository userDao;
 
-    public PostController(PostRepository postDao){
+
+    public PostController(PostRepository postDao, UserRepository userDao) {
         this.postDao = postDao;
+        this.userDao = userDao;
     }
 
     @GetMapping("/posts")
-    public String post(Model model){
+    public String post(Model model) {
         List<Post> allPosts = postDao.findAll();
-//        Post postOne = new Post(1, "Java and frameworks", "Java is a language that is statically typed");
-//        Post postTwo = new Post(2, "HTML 5", "HTML is considered a markup language");
-//        allPosts.add(postOne);
-//        allPosts.add(postTwo);
-//
-//        model.addAttribute("allPosts", allPosts);
         model.addAttribute("allPosts", allPosts);
 
 
@@ -33,7 +31,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}")
-    public String postId(@PathVariable long id, Model model){
+    public String postId(@PathVariable long id, Model model) {
 
         Post onePost = postDao.findPostById(id);
         model.addAttribute("onePost", onePost);
@@ -43,19 +41,21 @@ public class PostController {
     }
 
     @GetMapping("/posts/create")
-    public String viewCreate(Model model){
-
+    public String viewCreate(Model model) {
         model.addAttribute("post", new Post());
         return "/posts/create";
     }
 
     @PostMapping("/posts/create")
-    public String postCreate(@ModelAttribute Post post){
-            postDao.save(post);
+    public String postCreate(@RequestParam(name = "title") String title, @RequestParam(name = "body") String body) {
+        User user = userDao.getById(1L);
+        Post post = new Post(title, body, user);
+        postDao.save(post);
         return "redirect:/posts";
     }
+
     @GetMapping("/posts/{id}/edit")
-    public String viewEdit(@PathVariable long id, Model model){
+    public String viewEdit(@PathVariable long id, Model model) {
         Post editPost = postDao.getById(id);
         model.addAttribute("post", editPost);
 
@@ -63,7 +63,7 @@ public class PostController {
     }
 
     @PostMapping("/posts/{id}/edit")
-    public String postEdit(@RequestParam(name = "title")String title, @RequestParam(name="body") String body, @PathVariable long id){
+    public String postEdit(@RequestParam(name = "title") String title, @RequestParam(name = "body") String body, @PathVariable long id) {
         Post editedPost = postDao.getById(id);
         editedPost.setTitle(title);
         editedPost.setBody(body);
@@ -72,7 +72,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}/delete")
-    public String postDelete(@PathVariable long id){
+    public String postDelete(@PathVariable long id) {
         postDao.deleteById(id);
         return "redirect:/posts";
     }

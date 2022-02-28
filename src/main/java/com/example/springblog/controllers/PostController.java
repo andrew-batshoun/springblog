@@ -34,13 +34,7 @@ public class PostController {
 
     @GetMapping("/posts/{id}")
     public String postId(@PathVariable long id, Model model){
-//        Post postOne = new Post(1, "Java and frameworks", "Java is a language that is statically typed");
-//
-//            model.addAttribute("title", postOne.getTitle());
-//            model.addAttribute("body", postOne.getBody());
-//
-//            String message = "Sorry that post isn't available";
-//            model.addAttribute("message", message);
+
         Post onePost = postDao.findPostById(id);
         model.addAttribute("onePost", onePost);
 
@@ -57,9 +51,30 @@ public class PostController {
 
     @PostMapping("/posts/create")
     public String postCreate(@ModelAttribute Post post){
-        System.out.println("hello"+ post);
-
             postDao.save(post);
         return "redirect:/posts";
     }
+    @GetMapping("/posts/{id}/edit")
+    public String viewEdit(@PathVariable long id, Model model){
+        Post editPost = postDao.getById(id);
+        model.addAttribute("post", editPost);
+
+        return "/posts/edit";
+    }
+
+    @PostMapping("/posts/{id}/edit")
+    public String postEdit(@RequestParam(name = "title")String title, @RequestParam(name="body") String body, @PathVariable long id){
+        Post editedPost = postDao.getById(id);
+        editedPost.setTitle(title);
+        editedPost.setBody(body);
+        postDao.save(editedPost);
+        return "redirect:/posts";
+    }
+
+    @GetMapping("/posts/{id}/delete")
+    public String postDelete(@PathVariable long id){
+        postDao.deleteById(id);
+        return "redirect:/posts";
+    }
+
 }

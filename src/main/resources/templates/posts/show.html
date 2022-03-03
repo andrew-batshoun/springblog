@@ -7,17 +7,31 @@
 </head>
 <body>
 <nav th:replace="partials/nav :: navbar"></nav>
-<br>
-<br>
-
-<h2 th:text="${onePost.getTitle()}"></h2>
-<h3 th:text="${onePost.getBody()}"></h3>
-<h3 th:text="${onePost.getUser().getEmail()}"></h3>
 
 
 
-<br>
-<br>
+<main role="main" class="card text-center " style="margin: 10em auto; padding: 1em; width: 60%; display: flex; justify-content: center">
+<div class="blog-post" >
+    <h2 class="blog-post-title" th:text="${onePost.getTitle()}"></h2>
+    <p th:text="${onePost.getBody()}"></p>
+    <p >created by: <span th:text=" ${onePost.getUser().getUsername()}"></span></p>
+</div>
+    <div class="row d-flex justify-content-around">
+        <form th:action="@{/posts/{id}/edit (id= ${onePost.getId()})}" th:method="get" >
+            <input type="button" class="btn btn-sm btn-warning" value="Edit">
+        </form>
+<!--        <a class="btn btn-lg btn-info " type="button" th:href="@{/posts/{id}/edit (id = ${onePost.getId()})}">Edit</a>-->
+        <form th:action="@{/posts/{id}/delete (id= ${onePost.getId()})}" th:method="post" >
+            <input type="button" class="btn btn-sm btn-danger" value="Delete">
+        </form>
+    </div>
+
+
+
+</main>
+
+
+
 
 
 

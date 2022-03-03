@@ -1,7 +1,9 @@
 package com.example.springblog.controllers;
 
+import com.example.springblog.models.Categories;
 import com.example.springblog.models.Post;
 import com.example.springblog.models.User;
+import com.example.springblog.repositories.CategoryRepository;
 import com.example.springblog.repositories.PostRepository;
 import com.example.springblog.repositories.UserRepository;
 import com.example.springblog.services.EmailService;
@@ -18,12 +20,14 @@ public class PostController {
     private final PostRepository postDao;
     private final UserRepository userDao;
     private final EmailService emailService;
+    private final CategoryRepository catDao;
 
 
-    public PostController(PostRepository postDao, UserRepository userDao, EmailService emailService) {
+    public PostController(PostRepository postDao, UserRepository userDao, EmailService emailService, CategoryRepository catDao) {
         this.postDao = postDao;
         this.userDao = userDao;
         this.emailService = emailService;
+        this.catDao = catDao;
     }
 
     @GetMapping("/posts")
@@ -47,7 +51,9 @@ public class PostController {
 
     @GetMapping("/posts/create")
     public String viewCreate(Model model) {
+        model.addAttribute("cat", catDao.findAll());
         model.addAttribute("post", new Post());
+
         return "/posts/create";
     }
 
@@ -56,6 +62,7 @@ public class PostController {
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         post.setUser(user);
+
         postDao.save(post);
 //        String subject = "New Post!";
 //        String body = "A new post was created by " + user.getUsername();
@@ -80,18 +87,23 @@ public class PostController {
 
     @PostMapping("/posts/{id}/edit")
     public String postEdit(@PathVariable long id, @ModelAttribute Post post) {
-//        Post postEdit = postDao.getById(id);
-//        postEdit.setTitle(post.getTitle());
-//        postEdit.setBody(post.getBody());
-        User user = postDao.getById(id).getUser();
-        post.setUser(user);
-        postDao.save(post);
+
+        if (postDao.getById(id).getUser().getId() == (((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId())) {
+            post.setUser((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            postDao.save(post);
+        }
+
+
         return "redirect:/posts";
     }
 
-    @GetMapping("/posts/{id}/delete")
+    @PostMapping("/posts/{id}/delete")
     public String postDelete(@PathVariable long id) {
-        postDao.deleteById(id);
+        if (postDao.getById(id).getUser().getId() == (((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId())) {
+
+            postDao.deleteById(id);
+        }
+
         return "redirect:/posts";
     }
 

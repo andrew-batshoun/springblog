@@ -1,24 +1,65 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Log In</title>
+    <th:block th:include="partials/styling :: styling"></th:block>
+    <style>
+
+
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: 10em auto;
+        }
+        .form-signin .checkbox {
+            font-weight: 400;
+        }
+        .form-signin .form-control {
+            position: relative;
+            box-sizing: border-box;
+            height: auto;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .form-signin .form-control:focus {
+            z-index: 2;
+        }
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+    </style>
 </head>
 <body>
-<h1>Log In</h1>
-<div th:if="${param.error}">
-    Invalid Username and Password.
-</div>
-<div th:if="${param.logout}">
-    You have been logged out.
+<nav th:replace="partials/nav :: navbar"></nav>
+
+<div class="text-center">
+    <form class="form-signin" th:action="@{/login}" method="post">
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <label for="username" class="sr-only">Username</label>
+        <input id="username" name="username" type="text" class="form-control" placeholder="Username" required autofocus/>
+        <label for="password" class="sr-only">Password</label>
+        <input id="password" name="password" type="password" class="form-control" placeholder="Password" required/>
+        <button class="btn btn-lg btn-info btn-block" type="submit">Sign in</button>
+        <div th:if="${param.error}">
+            Invalid Username and Password.
+        </div>
+        <div th:if="${param.logout}">
+            You have been logged out.
+        </div>
+    </form>
 </div>
 
-<form th:action="@{/login}" method="post">
-    <label for="username">Username</label>
-    <input id="username" name="username" type="text" />
-    <label for="password">Password</label>
-    <input id="password" name="password" type="password" />
-    <input type="submit" value="Log In" />
-</form>
+<th:block th:include="partials/styling :: scripts"></th:block>
+<footer th:replace="partials/footer :: footer"></footer>
 </body>
 </html>

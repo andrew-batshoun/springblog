@@ -1,22 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8" />
-  <title>Sign up</title>
+    <meta charset="UTF-8"/>
+    <title>Sign up</title>
+    <th:block th:include="partials/styling :: styling"></th:block>
+
 </head>
 <body>
-<h1>Create an account</h1>
-<form th:action="@{/sign-up}" method="POST" th:object="${user}">
-  <label for="username">Username</label>
-  <input id="username" th:field="*{username}" />
+<nav th:replace="partials/nav :: navbar"></nav>
+<div class="text-center" style="width: 45%; margin: 10em auto;">
+    <h4 class="mb-3">Create an account</h4>
+    <form class="needs-validation" th:action="@{/sign-up}" method="POST" th:object="${user}">
+        <label for="username">Username</label>
+        <input class="form-control" id="username" th:field="*{username}" placeholder value required/>
+        <div class="invalid-feedback">Valid Username is required</div>
 
-  <label for="email">Email</label>
-  <input id="email" th:field="*{email}" />
 
-  <label for="password">Password</label>
-  <input id="password" type="password" th:field="*{password}" />
+        <label for="email">Email</label>
+        <input class="form-control" id="email" th:field="*{email}" placeholder value required/>
+        <div class="invalid-feedback">Valid email is required</div>
 
-  <input value="Sign me up!" type="submit" />
-</form>
+
+        <label for="password">Password</label>
+        <input class="form-control" id="password" type="password" th:field="*{password}" placeholder value
+               required/>
+        <div class="invalid-feedback">Valid password is required</div>
+
+        <button class="btn btn-lg btn-info btn-block" type="submit" style="margin-top:1em ">Sign me up</button>
+
+    </form>
+
+</div>
+</div>
+
+
+<th:block th:include="partials/styling :: scripts"></th:block>
+<footer th:replace="partials/footer :: footer"></footer>
 </body>
 </html>

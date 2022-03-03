@@ -4,23 +4,36 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <th:block th:include="partials/styling :: styling"></th:block>
+    <style>
+        textarea{
+            resize: none;
+        }
+
+    </style>
 </head>
 <body>
 <nav th:replace="partials/nav :: navbar"></nav>
+<div class=" card text-center " style="margin: 10em auto; padding: 1em; width: 60%; display: flex; justify-content: center">
+    <h1 class="h3 mb-3 font-weight-normal">Create a post</h1>
+    <form th:action="@{/posts/create}" th:method="post" th:object="${post}" >
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input class="form-control" id="title" th:field="*{title}">
+        </div>
+        <div class="form-group">
+            <label for="Body">Body</label>
+            <textarea class="form-control" id="Body" th:field="*{body}" rows="5"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="category">Select Category</label>
+            <select multiple class="form-control" id="category" >
+                <option th:each="cat : ${cat}"><span th:text="${cat.getCategory()}"></span></option>
 
-<form th:action="@{/posts/create}" th:method="post" th:object="${post}"  style="width: 50%">
-    <div class="form-group">
-        <label for="title">Title</label>
-        <input class="form-control" id="title" th:field = "*{title}">
-
-    </div>
-    <div class="form-group">
-        <label for="Body">Body</label>
-        <input class="form-control" id="Body" th:field = "*{body}">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
 <th:block th:include="partials/styling :: scripts"></th:block>
 <footer th:replace="partials/footer :: footer"></footer>
 </body>

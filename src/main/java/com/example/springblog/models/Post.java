@@ -1,6 +1,7 @@
 package com.example.springblog.models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Post {
@@ -11,12 +12,22 @@ public class Post {
     @Column(nullable = false, length = 100)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String body;
 
     @ManyToOne
     @JoinColumn (name = "user_id")
     private User user;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "post_categories",
+            joinColumns = {@JoinColumn(name="post_id")},
+            inverseJoinColumns = {@JoinColumn(name = "category_id")}
+    )
+    private List<Categories> categories;
+
+
 
     public Post() {
     }
@@ -32,6 +43,14 @@ public class Post {
         this.title = title;
         this.body = body;
         this.user = user;
+    }
+
+    public Post(long id, String title, String body, User user, List<Categories> categories) {
+        this.id = id;
+        this.title = title;
+        this.body = body;
+        this.user = user;
+        this.categories = categories;
     }
 
     public User getUser() {
@@ -64,5 +83,13 @@ public class Post {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public List<Categories> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Categories> categories) {
+        this.categories = categories;
     }
 }

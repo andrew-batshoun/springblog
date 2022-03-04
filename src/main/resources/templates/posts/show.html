@@ -18,11 +18,11 @@
 </div>
     <div class="row d-flex justify-content-around">
         <form th:action="@{/posts/{id}/edit (id= ${onePost.getId()})}" th:method="get" >
-            <input type="button" class="btn btn-sm btn-warning" value="Edit">
+            <button type="submit" class="btn btn-sm btn-warning" >Edit</button>
         </form>
 <!--        <a class="btn btn-lg btn-info " type="button" th:href="@{/posts/{id}/edit (id = ${onePost.getId()})}">Edit</a>-->
         <form th:action="@{/posts/{id}/delete (id= ${onePost.getId()})}" th:method="post" >
-            <input type="button" class="btn btn-sm btn-danger" value="Delete">
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
         </form>
     </div>
 

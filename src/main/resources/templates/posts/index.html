@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <th:block th:include="partials/styling :: styling"></th:block>
+    <style>
+
+    </style>
 </head>
 <body>
 <nav th:replace="partials/nav :: navbar"></nav>
@@ -67,7 +70,7 @@
                From the source
             </h3>
             <div class="blog-post" th:each="post : ${allPosts}">
-                <h2 class="blog-post-title" ><a th:href="@{/posts/{id} (id =${post.getId()})}"><span th:text="${post.getTitle()}"></span></a></h2>
+                <h2 class="blog-post-title" ><a th:href="@{/posts/{id} (id =${post.getId()})}"><span th:text="${post.getTitle()}" style="color: darkblue"></span></a></h2>
                 <p th:text="${post.getBody()}"></p>
             </div>
 <!--            <nav class="blog-pagination">-->

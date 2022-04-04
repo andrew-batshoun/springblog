@@ -16,11 +16,11 @@
     <p th:text="${onePost.getBody()}"></p>
     <p >created by: <span th:text=" ${onePost.getUser().getUsername()}"></span></p>
 </div>
-    <div class="row d-flex justify-content-around">
+    <div class="row d-flex justify-content-around" sec:Authorize="isAuthenticated()">
         <form th:action="@{/posts/{id}/edit (id= ${onePost.getId()})}" th:method="get" >
             <button type="submit" class="btn btn-sm btn-warning" >Edit</button>
         </form>
-<!--        <a class="btn btn-lg btn-info " type="button" th:href="@{/posts/{id}/edit (id = ${onePost.getId()})}">Edit</a>-->
+
         <form th:action="@{/posts/{id}/delete (id= ${onePost.getId()})}" th:method="post" >
             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
         </form>

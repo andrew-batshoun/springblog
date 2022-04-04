@@ -1,6 +1,7 @@
 package com.example.springblog.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Entity
@@ -9,9 +10,11 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "This needs a title")
     @Column(nullable = false, length = 100)
     private String title;
 
+    @NotBlank(message = "This needs a body")
     @Column(nullable = false, length = 1000)
     private String body;
 

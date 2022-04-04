@@ -10,8 +10,10 @@ import com.example.springblog.services.EmailService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -54,19 +56,20 @@ public class PostController {
         model.addAttribute("cat", catDao.findAll());
         model.addAttribute("post", new Post());
 
-        return "/posts/create";
+        return "posts/create";
     }
 
     @PostMapping("/posts/create")
-    public String postCreate(@ModelAttribute Post post) {
+    public String postCreate(@Valid @ModelAttribute Post post, Errors validation, Model model) {
 
+        if (validation.hasErrors()){
+            model.addAttribute("errors", validation);
+            model.addAttribute("post", post);
+            return "posts/create";
+        }
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         post.setUser(user);
-
         postDao.save(post);
-//        String subject = "New Post!";
-//        String body = "A new post was created by " + user.getUsername();
-//        emailService.prepareAndSend(post, subject, body);
         return "redirect:/posts";
     }
 

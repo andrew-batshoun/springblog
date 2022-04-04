@@ -18,19 +18,21 @@
     <form th:action="@{/posts/create}" th:method="post" th:object="${post}" >
         <div class="form-group">
             <label for="title">Title</label>
-            <input class="form-control" id="title" th:field="*{title}">
+            <input class="form-control" id="title" name="title" th:field="*{title}">
+            <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="" />
         </div>
         <div class="form-group">
             <label for="Body">Body</label>
-            <textarea class="form-control" id="Body" th:field="*{body}" rows="5"></textarea>
+            <textarea class="form-control" id="Body" name="body" th:field="*{body}" rows="5"></textarea>
+            <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('body')}" th:errors="*{body}" />
         </div>
-        <div class="form-group">
-            <label for="category">Select Category</label>
-            <select multiple class="form-control" id="category" >
-                <option th:each="cat : ${cat}"><span th:text="${cat.getCategory()}"></span></option>
+<!--        <div class="form-group">-->
+<!--            <label for="category">Select Category</label>-->
+<!--            <select multiple class="form-control" id="category" >-->
+<!--                <option th:each="cat : ${cat}"><span th:text="${cat.getCategory()}"></span></option>-->
 
-            </select>
-        </div>
+<!--            </select>-->
+<!--        </div>-->
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
